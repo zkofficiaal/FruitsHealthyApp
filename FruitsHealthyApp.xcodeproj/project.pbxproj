@@ -29,22 +29,9 @@
 		070A5B41303967DE0059F042 /* FruitsHealthyAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FruitsHealthyAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		070A5BA0303977F60059F042 /* Exceptions for "FruitsHealthyApp" folder in "FruitsHealthyApp" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Components/Untitled.swift,
-			);
-			target = 070A5B29303967DB0059F042 /* FruitsHealthyApp */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		070A5B2C303967DB0059F042 /* FruitsHealthyApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				070A5BA0303977F60059F042 /* Exceptions for "FruitsHealthyApp" folder in "FruitsHealthyApp" target */,
-			);
 			path = FruitsHealthyApp;
 			sourceTree = "<group>";
 		};
