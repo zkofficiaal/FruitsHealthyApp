@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 // MARK: - Nutrition ViewModel
+// Manages nutrition data and selected date
 final class NutritionViewModel: ObservableObject {
     @Published var nutrition: DailyNutrition = .sample
     // Holds daily nutrition data (sample by default)

@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 // MARK: - Home ViewModel
+// Manages user greeting, search, and top fruits
 final class HomeViewModel: ObservableObject {
     @Published var userName: String = "DevTechZahid"
     // Stores current user’s name for greeting

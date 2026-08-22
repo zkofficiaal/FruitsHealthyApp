@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 // MARK: - Fruits ViewModel
+// Handles categories and filtering logic
 final class FruitsViewModel: ObservableObject {
     @Published var categories = FruitCategory.all
     // All available fruit categories
