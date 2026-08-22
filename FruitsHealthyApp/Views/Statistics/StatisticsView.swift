@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Charts
+import Charts   ///framework for statistics
 
 // MARK: - Statistics View
 // Screen for viewing calorie intake and nutrient ratio analytics
