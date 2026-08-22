@@ -45,11 +45,6 @@
 			path = FruitsHealthyAppUITests;
 			sourceTree = "<group>";
 		};
-		070A5B563039682C0059F042 /* App */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = App;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +75,6 @@
 		070A5B21303967DB0059F042 = {
 			isa = PBXGroup;
 			children = (
-				070A5B563039682C0059F042 /* App */,
 				070A5B2C303967DB0059F042 /* FruitsHealthyApp */,
 				070A5B3A303967DE0059F042 /* FruitsHealthyAppTests */,
 				070A5B44303967DE0059F042 /* FruitsHealthyAppUITests */,
@@ -115,7 +109,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				070A5B2C303967DB0059F042 /* FruitsHealthyApp */,
-				070A5B563039682C0059F042 /* App */,
 			);
 			name = FruitsHealthyApp;
 			packageProductDependencies = (
