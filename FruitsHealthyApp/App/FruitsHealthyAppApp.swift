@@ -2,7 +2,7 @@
 //  FruitsHealthyAppApp.swift
 //  FruitsHealthyApp
 //
-//  Created by Z.K   on 21/08/2026.
+//  Created by Z.K   on 21/08/2026.
 //
 
 import SwiftUI
@@ -10,12 +10,16 @@ import SwiftUI
 // MARK: - App Entry Point
 @main
 struct FruitsHealthyAppApp: App {
-    // No properties here — this struct only defines the app entry
-    
+    @StateObject private var router = AppRouter()
+    // Creates the single shared AppRouter instance for the whole app lifecycle
+
     var body: some Scene {
         WindowGroup {
             RootView()
-            // ContentView: The first screen shown when the app launches
+                .environmentObject(router)
+                // Injects AppRouter into the environment so any child view
+                // (RootView, MainTabContainer, HomeView, etc.) can access it
+                // via @EnvironmentObject var router: AppRouter
         }
     }
 }

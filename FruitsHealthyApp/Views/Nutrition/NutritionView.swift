@@ -2,7 +2,7 @@
 //  NutritionView.swift
 //  FruitsHealthyApp
 //
-//  Created by Z.K   on 21/08/2026.
+//  Created by Z.K   on 21/08/2026.
 //
 
 import SwiftUI
@@ -13,54 +13,56 @@ struct NutritionView: View {
     @StateObject private var vm = NutritionViewModel()   // ViewModel for nutrition state
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // MARK: - Header
-                // Top bar with back, title, and options
-                HStack {
-                    Image(systemName: "chevron.left")
-                    Spacer()
-                    Text("Nutrition").font(.h2)
-                    Spacer()
-                    Image(systemName: "ellipsis")
+        GeometryReader { geo in
+            ScrollView {
+                VStack(spacing: 20) {
+                    // MARK: - Header
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Spacer()
+                        Text("Nutrition").font(.h2)
+                        Spacer()
+                        Image(systemName: "ellipsis")
+                    }
+
+                    // MARK: - Date Card
+                    HStack {
+                        Text(vm.selectedDate).font(.bodyText)
+                        Spacer()
+                        Image(systemName: "calendar")
+                    }
+                    .padding(12)
+                    .background(Color.appCard)
+                    .cornerRadius(12)
+
+                    // MARK: - Donut Progress Ring
+                    // Circular chart showing nutrient breakdown, sized relative to screen width
+                    DonutProgressRing(
+                        segments: [vm.nutrition.carbs, vm.nutrition.protein, vm.nutrition.fats, vm.nutrition.others],
+                        centerValue: "\(vm.nutrition.totalKcal)",
+                        centerLabel: "kcal",
+                        size: geo.size.width * 0.42
+                    )
+                    .frame(maxWidth: .infinity)
+
+                    // MARK: - Nutrient Legend
+                    VStack(spacing: 10) {
+                        nutrientLegendRow(vm.nutrition.carbs)
+                        nutrientLegendRow(vm.nutrition.protein)
+                        nutrientLegendRow(vm.nutrition.fats)
+                        nutrientLegendRow(vm.nutrition.others)
+                    }
+                    .padding()
+                    .background(Color.appCard)
+                    .cornerRadius(16)
+
+                    // MARK: - Water Intake Card
+                    waterIntakeCard
                 }
-
-                // MARK: - Date Card
-                // Shows selected date with calendar icon
-                HStack {
-                    Text(vm.selectedDate).font(.bodyText)
-                    Spacer()
-                    Image(systemName: "calendar")
-                }
-                .padding(12)
-                .background(Color.appCard)
-                .cornerRadius(12)
-
-                // MARK: - Donut Progress Ring
-                // Circular chart showing nutrient breakdown
-                DonutProgressRing(
-                    segments: [vm.nutrition.carbs, vm.nutrition.protein, vm.nutrition.fats, vm.nutrition.others],
-                    centerValue: "\(vm.nutrition.totalKcal)",
-                    centerLabel: "kcal"
-                )
-
-                // MARK: - Nutrient Legend
-                // List of nutrient values with percentages
-                VStack(spacing: 10) {
-                    nutrientLegendRow(vm.nutrition.carbs)
-                    nutrientLegendRow(vm.nutrition.protein)
-                    nutrientLegendRow(vm.nutrition.fats)
-                    nutrientLegendRow(vm.nutrition.others)
-                }
-                .padding()
-                .background(Color.appCard)
-                .cornerRadius(16)
-
-                // MARK: - Water Intake Card
-                // Displays water intake progress with add button
-                waterIntakeCard
+                .padding(.horizontal, geo.size.width * 0.045)
+                .padding(.vertical, 16)
+                .frame(minWidth: geo.size.width)
             }
-            .padding(16)
         }
         .background(Color.appBackground.ignoresSafeArea())
     }
