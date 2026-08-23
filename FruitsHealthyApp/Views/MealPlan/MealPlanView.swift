@@ -1,53 +1,64 @@
-//
-//  MealPlanView.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
-
 import SwiftUI
 
 // MARK: - Meal Plan View
 // Screen for managing daily meals, kcal progress, and recommendations
 struct MealPlanView: View {
-    @StateObject private var vm = MealPlanViewModel()   // ViewModel for meal plan state
+    @StateObject private var vm = MealPlanViewModel()
+    @EnvironmentObject var router: AppRouter   // Router for navigation
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // MARK: - Header
-                // Top bar with back, title, and options
                 HStack {
-                    Image(systemName: "chevron.left")
+                    // Back button → returns to Home
+                    Button { router.goBackToHome() } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.appTextDark)
+                    }
+
                     Spacer()
+
                     Text("Meal Plan").font(.h2)
+
                     Spacer()
-                    Image(systemName: "ellipsis")
+
+                    // Ellipsis button → placeholder for future actions
+                    Button {
+                        // TODO: Wire to options sheet or menu
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.appTextDark)
+                    }
                 }
 
                 // MARK: - Date Card
-                // Shows selected date with calendar icon
                 HStack {
                     Text(vm.selectedDate).font(.bodyText)
                     Spacer()
-                    Image(systemName: "calendar")
+                    Button {
+                        // TODO: Wire to calendar picker
+                    } label: {
+                        Image(systemName: "calendar")
+                            .foregroundColor(.appTextDark)
+                    }
                 }
                 .padding(12)
                 .background(Color.appCard)
                 .cornerRadius(12)
 
-                // MARK: - Recommended Meals
-                // List of suggested meals for the day
                 Text("Recommended Meals").font(.h2)
 
+                // MARK: - Meals List
                 VStack(spacing: 10) {
                     ForEach(vm.meals) { meal in
-                        MealRow(meal: meal) { }
+                        MealRow(meal: meal) {
+                            vm.logMeal(meal)   // "+" button now logs meal
+                        }
                     }
                 }
 
                 // MARK: - Daily Progress Card
-                // Displays kcal progress with percentage
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text("Daily Progress").font(.bodyText.bold())
