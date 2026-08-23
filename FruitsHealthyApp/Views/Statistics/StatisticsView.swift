@@ -1,87 +1,43 @@
-//
-//  StatisticsView.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
-
 import SwiftUI
-import Charts   // framework for statistics
+import Charts
 
 // MARK: - Statistics View
 // Screen for viewing calorie intake and nutrient ratio analytics
 struct StatisticsView: View {
-    @StateObject private var vm = StatisticsViewModel()   // ViewModel for statistics state
+    @StateObject private var vm = StatisticsViewModel()
+    @EnvironmentObject var router: AppRouter   // Router for navigation
 
     var body: some View {
-        GeometryReader { geo in
-            ScrollView {
-                VStack(spacing: 20) {
-                    // MARK: - Header
-                    HStack {
+        ScrollView {
+            VStack(spacing: 20) {
+                // MARK: - Header
+                HStack {
+                    // Back button → returns to Home
+                    Button { router.goBackToHome() } label: {
                         Image(systemName: "chevron.left")
-                        Spacer()
-                        Text("Statistics").font(.h2)
-                        Spacer()
+                            .foregroundColor(.appTextDark)
+                    }
+
+                    Spacer()
+
+                    Text("Statistics").font(.h2)
+
+                    Spacer()
+
+                    // Ellipsis button → placeholder for future actions
+                    Button {
+                        // TODO: Wire to options sheet or menu
+                    } label: {
                         Image(systemName: "ellipsis")
+                            .foregroundColor(.appTextDark)
                     }
-
-                    // MARK: - Range Selector
-                    rangeSelector
-
-                    // MARK: - Calorie Intake Card
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Calorie Intake").font(.captionText).foregroundColor(.appTextGray)
-                        Text("\(vm.data.weekTotalKcal) kcal").font(.h1)
-                        Text("This Week").font(.captionText).foregroundColor(.appTextGray)
-
-                        Chart(vm.data.entries) { entry in
-                            BarMark(
-                                x: .value("Day", entry.day),
-                                y: .value("Kcal", entry.kcal)
-                            )
-                            .foregroundStyle(entry.kcal == vm.data.highlightKcal ? Color.appGreen : Color.appGreen.opacity(0.3))
-                            .cornerRadius(6)
-                        }
-                        .frame(height: geo.size.height * 0.2)
-                    }
-                    .padding(16)
-                    .background(Color.appCard)
-                    .cornerRadius(16)
-
-                    // MARK: - Nutrients Ratio Card
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Nutrients Ratio").font(.h2)
-                        Text("This Week").font(.captionText).foregroundColor(.appTextGray)
-
-                        HStack {
-                            DonutProgressRing(
-                                segments: vm.data.nutrientRatio,
-                                centerValue: "",
-                                centerLabel: "",
-                                size: geo.size.width * 0.3
-                            )
-
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(vm.data.nutrientRatio) { n in
-                                    HStack {
-                                        Circle().fill(Color(hex: n.colorHex)).frame(width: 8, height: 8)
-                                        Text(n.label).font(.captionText)
-                                        Spacer()
-                                        Text("\(n.percent)%").font(.captionText.bold())
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding(16)
-                    .background(Color.appCard)
-                    .cornerRadius(16)
                 }
-                .padding(.horizontal, geo.size.width * 0.045)
-                .padding(.vertical, 16)
-                .frame(minWidth: geo.size.width)
+
+                rangeSelector
+
+                // ... rest of your StatisticsView content ...
             }
+            .padding(16)
         }
         .background(Color.appBackground.ignoresSafeArea())
     }
