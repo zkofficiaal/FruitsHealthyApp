@@ -11,6 +11,7 @@ import SwiftUI
 // Dashboard screen showing greeting, search, nutrition, and top fruits
 struct HomeView: View {
     @StateObject private var vm = HomeViewModel()   // ViewModel for state management
+    @EnvironmentObject var router: AppRouter        // Router for navigation
 
     var body: some View {
         ScrollView {
@@ -19,10 +20,10 @@ struct HomeView: View {
                 searchBar
                 goalCard
 
-                sectionHeader("Nutrition Overview")
+                sectionHeader("Nutrition Overview") { router.goToTab(.stats) }
                 nutritionGrid
 
-                sectionHeader("Top Fruits")
+                sectionHeader("Top Fruits") { router.goToTab(.fruits) }
                 topFruitsRow
             }
             .padding(16)
@@ -88,12 +89,14 @@ struct HomeView: View {
     }
 
     // MARK: - Section Header
-    // Reusable section header with "See All"
-    private func sectionHeader(_ title: String) -> some View {
+    // Reusable section header with "See All" button
+    private func sectionHeader(_ title: String, action: @escaping () -> Void) -> some View {
         HStack {
             Text(title).font(.h2)
             Spacer()
-            Text("See All").font(.captionText).foregroundColor(.appGreen)
+            Button("See All", action: action)
+                .font(.captionText)
+                .foregroundColor(.appGreen)
         }
     }
 
