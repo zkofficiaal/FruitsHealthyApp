@@ -1,29 +1,35 @@
-//
-//  AppRouter.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
 import SwiftUI
-import Combine
 
 // MARK: - App Tabs
-enum AppTab {
+enum AppTab: Equatable {
     case home, fruits, stats, profile
-    // Represents the four main tabs in the app
 }
 
-// MARK: - Router
+// MARK: - App Router
+// Handles onboarding, tab navigation, and sheet presentation
 final class AppRouter: ObservableObject {
     @Published var showOnboarding: Bool = true
-    // Controls whether onboarding is shown or not
-
     @Published var selectedTab: AppTab = .home
-    // Tracks which tab is currently active
+    @Published var showAddSheet: Bool = false
 
+    // MARK: - Navigation
     func completeOnboarding() {
         withAnimation { showOnboarding = false }
-        // Transition smoothly from onboarding to main tabs
+    }
+
+    func goBackToHome() {
+        withAnimation { selectedTab = .home }
+    }
+
+    // MARK: - Sheet Presentation
+    func presentAddSheet() {
+        withAnimation { showAddSheet = true }
+    }
+
+    // MARK: - Reset State
+    func reset() {
+        showOnboarding = true
+        selectedTab = .home
+        showAddSheet = false
     }
 }
-
