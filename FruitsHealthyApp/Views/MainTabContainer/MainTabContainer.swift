@@ -1,31 +1,29 @@
-//
-//  MainTabContainer.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
-
 import SwiftUI
 
 // MARK: - Main Tab Container
+// Hosts tab views and handles add sheet presentation
 struct MainTabContainer: View {
     @EnvironmentObject var router: AppRouter
-    // Shared router object to track selected tab
 
     var body: some View {
         VStack(spacing: 0) {
             Group {
                 switch router.selectedTab {
-                case .home: HomeView()        // Shows Home screen
-                case .fruits: FruitsView()    // Shows Fruits screen
-                case .stats: StatisticsView() // Shows Statistics screen
-                case .profile: MealPlanView() // Shows Meal Plan/Profile screen
+                case .home: HomeView()
+                case .fruits: FruitsView()
+                case .stats: StatisticsView()
+                case .profile: MealPlanView()
                 }
             }
-            CustomTabBar(selectedTab: $router.selectedTab)
-            // Bottom tab bar bound to router for navigation
+
+            // Custom tab bar with add button wired to router
+            CustomTabBar(selectedTab: $router.selectedTab) {
+                router.presentAddSheet()
+            }
         }
         .background(Color.appBackground.ignoresSafeArea())
-        // Sets global background color ignoring safe area
+        .sheet(isPresented: $router.showAddSheet) {
+            QuickAddSheet()
+        }
     }
 }

@@ -1,5 +1,5 @@
 import SwiftUI
-
+import Combine
 // MARK: - App Tabs
 enum AppTab: Equatable {
     case home, fruits, stats, profile
