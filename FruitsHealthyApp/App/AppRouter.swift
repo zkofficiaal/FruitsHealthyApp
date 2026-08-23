@@ -12,7 +12,6 @@ final class AppRouter: ObservableObject {
     @Published var selectedTab: AppTab = .home
     @Published var showAddSheet: Bool = false
 
-    // MARK: - Navigation
     func completeOnboarding() {
         withAnimation { showOnboarding = false }
     }
@@ -21,15 +20,11 @@ final class AppRouter: ObservableObject {
         withAnimation { selectedTab = .home }
     }
 
-    // MARK: - Sheet Presentation
     func presentAddSheet() {
         withAnimation { showAddSheet = true }
     }
 
-    // MARK: - Reset State
-    func reset() {
-        showOnboarding = true
-        selectedTab = .home
-        showAddSheet = false
+    func goToTab(_ tab: AppTab) {
+        withAnimation { selectedTab = tab }
     }
 }

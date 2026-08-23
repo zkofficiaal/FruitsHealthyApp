@@ -55,5 +55,5 @@ struct CustomTabBar: View {
     }
 }
 
-// MARK: - AppTab Equatable
-extension AppTab: Equatable {}
+//// MARK: - AppTab Equatable
+//extension AppTab: Equatable {}
