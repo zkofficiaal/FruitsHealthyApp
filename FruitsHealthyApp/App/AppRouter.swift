@@ -1,12 +1,13 @@
 import SwiftUI
 import Combine
+
 // MARK: - App Tabs
 enum AppTab: Equatable {
     case home, fruits, stats, profile
 }
 
-// MARK: - App Router
-// Handles onboarding, tab navigation, and sheet presentation
+// MARK: - Router
+// Central navigation/state controller shared across the whole app
 final class AppRouter: ObservableObject {
     @Published var showOnboarding: Bool = true
     @Published var selectedTab: AppTab = .home
@@ -20,11 +21,11 @@ final class AppRouter: ObservableObject {
         withAnimation { selectedTab = .home }
     }
 
-    func presentAddSheet() {
-        withAnimation { showAddSheet = true }
-    }
-
     func goToTab(_ tab: AppTab) {
         withAnimation { selectedTab = tab }
+    }
+
+    func presentAddSheet() {
+        showAddSheet = true
     }
 }
