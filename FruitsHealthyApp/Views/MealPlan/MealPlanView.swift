@@ -67,8 +67,11 @@ struct MealPlanView: View {
                             .font(.captionText)
                             .foregroundColor(.appTextGray)
                     }
-                    ProgressView(value: Double(vm.currentKcal), total: Double(vm.goalKcal))
-                        .tint(.appGreen)
+                    ProgressView(
+                        value: Double(min(vm.currentKcal, vm.goalKcal)),
+                        total: Double(vm.goalKcal)
+                    )
+                    .tint(.appGreen)
                     Text("\(vm.progressPercent)%")
                         .font(.captionText)
                         .foregroundColor(.appGreen)

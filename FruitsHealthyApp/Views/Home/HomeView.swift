@@ -68,7 +68,7 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("Today's Goal").font(.captionText).foregroundColor(.appTextGray)
                 Text("\(vm.nutrition.goalKcal) kcal").font(.h2)
-                ProgressView(value: vm.nutrition.progress)
+                ProgressView(value: min(max(vm.nutrition.progress, 0), 1))
                     .tint(.appGreen)
                     .frame(width: 140)
             }
