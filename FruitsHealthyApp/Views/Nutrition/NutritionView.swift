@@ -18,22 +18,35 @@ struct NutritionView: View {
                 VStack(spacing: 20) {
                     // MARK: - Header
                     HStack {
-                        Image(systemName: "chevron.left")
+                        Text(vm.selectedDate).font(.bodyText)
                         Spacer()
-                        Text("Nutrition").font(.h2)
-                        Spacer()
-                        Image(systemName: "ellipsis")
+                        Button {
+                            // TODO: Wire to calendar picker
+                        } label: {
+                            Image(systemName: "calendar")
+                                .foregroundColor(.appTextDark)
+                        }
                     }
+                    .padding(12)
+                    .background(Color.appCard)
+                    .cornerRadius(12)
+
 
                     // MARK: - Date Card
                     HStack {
                         Text(vm.selectedDate).font(.bodyText)
                         Spacer()
-                        Image(systemName: "calendar")
+                        Button {
+                            // TODO: Wire to calendar picker
+                        } label: {
+                            Image(systemName: "calendar")
+                                .foregroundColor(.appTextDark)
+                        }
                     }
                     .padding(12)
                     .background(Color.appCard)
                     .cornerRadius(12)
+
 
                     // MARK: - Donut Progress Ring
                     // Circular chart showing nutrient breakdown, sized relative to screen width
