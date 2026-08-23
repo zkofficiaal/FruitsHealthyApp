@@ -1,28 +1,22 @@
-//
-//  CustomTabBar.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
-
 import SwiftUI
 
 // MARK: - Custom Tab Bar
-// Reusable bottom tab bar with icons and center add button
+// Bottom tab bar with selectable icons and center add button
 struct CustomTabBar: View {
-    @Binding var selectedTab: AppTab   // Currently selected tab
+    @Binding var selectedTab: AppTab
+    var onAddTapped: () -> Void = {}
 
     var body: some View {
-        HStack {
-            tabIcon(.home, "house.fill")
+        HStack(spacing: 0) {
+            tabButton(.home, "house.fill")
             Spacer()
-            tabIcon(.fruits, "leaf.fill")
+            tabButton(.fruits, "leaf.fill")
             Spacer()
             centerAddButton
             Spacer()
-            tabIcon(.stats, "chart.bar.fill")
+            tabButton(.stats, "chart.bar.fill")
             Spacer()
-            tabIcon(.profile, "person.fill")
+            tabButton(.profile, "person.fill")
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 14)
@@ -33,27 +27,32 @@ struct CustomTabBar: View {
         .padding(.bottom, 8)
     }
 
-    // MARK: - Tab Icon
-    // Creates a tab icon with active/inactive state
-    private func tabIcon(_ tab: AppTab, _ symbol: String) -> some View {
-        Image(systemName: symbol)
-            .font(.system(size: 18))
-            .foregroundColor(selectedTab == tab ? .appGreen : .appTextGray)
-            .onTapGesture { selectedTab = tab }
+    // MARK: - Tab Button
+    private func tabButton(_ tab: AppTab, _ symbol: String) -> some View {
+        Button {
+            selectedTab = tab
+        } label: {
+            Image(systemName: symbol)
+                .font(.system(size: 18))
+                .foregroundColor(selectedTab == tab ? .appGreen : .appTextGray)
+                .frame(maxWidth: .infinity) // ensures even spacing
+                .contentShape(Rectangle())  // improves tap area
+        }
     }
 
     // MARK: - Center Add Button
-    // Prominent circular add button in the middle
     private var centerAddButton: some View {
-        Image(systemName: "plus")
-            .font(.system(size: 18, weight: .bold))
-            .foregroundColor(.white)
-            .frame(width: 44, height: 44)
-            .background(Color.appGreen)
-            .clipShape(Circle())
+        Button(action: onAddTapped) {
+            Image(systemName: "plus")
+                .font(.system(size: 18, weight: .bold))
+                .foregroundColor(.white)
+                .frame(width: 44, height: 44)
+                .background(Color.appGreen)
+                .clipShape(Circle())
+                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+        }
     }
 }
 
 // MARK: - AppTab Equatable
 extension AppTab: Equatable {}
-
