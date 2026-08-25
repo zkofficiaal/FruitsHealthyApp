@@ -1,25 +1,37 @@
-//
-//  FruitGridCard.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
 import SwiftUI
 
 // MARK: - Fruit Grid Card
-// Displays fruit info with image, kcal, and add button
+// Vertical card layout: fruit image fills the top,
+// name + kcal below, and a floating "+" button sits
+// bottom-right on the image — matches reference design.
 struct FruitGridCard: View {
     let fruit: Fruit              // Fruit model data
-    var onAdd: () -> Void         // Action when add button tapped
+    var onAdd: () -> Void         // Action when "+" tapped
 
     var body: some View {
-        HStack(spacing: 12) {
-            Image(fruit.imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 44, height: 44)
-                .clipShape(Circle())
+        VStack(alignment: .leading, spacing: 8) {
+            // MARK: - Image with Floating Add Button
+            ZStack(alignment: .bottomTrailing) {
+                Image(fruit.imageName)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 90)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
 
+                Button(action: onAdd) {
+                    Image(systemName: "plus")
+                        .font(.caption.bold())
+                        .foregroundColor(.white)
+                        .frame(width: 26, height: 26)
+                        .background(Color.appGreen)
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.15), radius: 3, y: 2)
+                }
+                .padding(6)
+            }
+
+            // MARK: - Text Info
             VStack(alignment: .leading, spacing: 2) {
                 Text(fruit.name)
                     .font(.bodyText.bold())
@@ -28,22 +40,11 @@ struct FruitGridCard: View {
                     .font(.captionText)
                     .foregroundColor(.appTextGray)
             }
-
-            Spacer()
-
-            Button(action: onAdd) {
-                Image(systemName: "plus")
-                    .font(.caption.bold())
-                    .foregroundColor(.white)
-                    .frame(width: 22, height: 22)
-                    .background(Color.appGreen)
-                    .clipShape(Circle())
-            }
+            .padding(.horizontal, 4)
         }
-        .padding(12)
+        .padding(8)
         .background(Color.appCard)
-        .cornerRadius(14)
-        .shadow(color: .black.opacity(0.04), radius: 5, y: 2)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.04), radius: 6, y: 3)
     }
 }
-
