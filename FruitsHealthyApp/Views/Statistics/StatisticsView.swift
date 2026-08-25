@@ -47,10 +47,21 @@ struct StatisticsView: View {
                             )
                             .foregroundStyle(entry.kcal == vm.data.highlightKcal
                                              ? Color.appGreen
-                                             : Color.appGreen.opacity(0.3))
+                                             : Color.appGreen.opacity(0.25))
                             .cornerRadius(6)
+                            .annotation(position: .top) {
+                                if entry.kcal == vm.data.highlightKcal {
+                                    Text("\(entry.kcal)")
+                                        .font(.caption2.bold())
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(Color.appTextDark)
+                                        .cornerRadius(8)
+                                }
+                            }
                         }
-                        .frame(height: geo.size.height * 0.22) // responsive height
+                        .frame(height: geo.size.height * 0.2) // responsive height
                     }
                     .padding(16)
                     .background(Color.appCard)
@@ -66,7 +77,7 @@ struct StatisticsView: View {
                                 segments: vm.data.nutrientRatio,
                                 centerValue: "",
                                 centerLabel: "",
-                                size: geo.size.width * 0.3 // responsive size
+                                size: geo.size.width * 0.3
                             )
                             .frame(width: geo.size.width * 0.3, height: geo.size.width * 0.3)
 
