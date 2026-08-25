@@ -32,12 +32,19 @@ struct HomeView: View {
     }
 
     // MARK: - Header
-    // Greeting text and avatar
+    // Greeting text, morning message + speaker icon, and avatar
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Hello, \(vm.userName)!").font(.h1)
-                Text("Good Morning").font(.captionText).foregroundColor(.appTextGray)
+                HStack(spacing: 4) {
+                    Text("Good Morning")
+                        .font(.captionText)
+                        .foregroundColor(.appTextGray)
+                    Image(systemName: "speaker.wave.2.fill")
+                        .font(.system(size: 10))
+                        .foregroundColor(.appTextGray)
+                }
             }
             Spacer()
             Image("avatar_olivia")
