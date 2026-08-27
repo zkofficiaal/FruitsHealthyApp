@@ -1,22 +1,17 @@
-//
-//  FruitCategory.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
-
 import Foundation
 
 // MARK: - Fruit Category Model
+// Represents a category of fruits (e.g., Berry, Tropical, Citrus)
 struct FruitCategory: Identifiable, Equatable {
-    let id = UUID()          // Unique identifier for each category
-    let title: String        // Category title (e.g., All, Berry, Tropical, Citrus)
+    let id = UUID()        // Unique identifier
+    let title: String      // Category title
 
-    // MARK: - Sample Categories
+    // MARK: - All Categories
+    // Static list of categories used throughout the app
     static let all: [FruitCategory] = [
-        .init(title: "All"),       // All fruits
-        .init(title: "Berry"),     // Berry fruits
-        .init(title: "Tropical"),  // Tropical fruits
-        .init(title: "Citrus")     // Citrus fruits
+        .init(title: "All"),
+        .init(title: "Berry"),
+        .init(title: "Tropical"),
+        .init(title: "Citrus")
     ]
 }
