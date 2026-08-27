@@ -1,60 +1,38 @@
 import SwiftUI
 
 // MARK: - Meal Plan View
-// Screen for managing daily meals, kcal progress, and recommendations
+// Displays daily meal plan with recommended meals and kcal progress
 struct MealPlanView: View {
-    @StateObject private var vm = MealPlanViewModel()
-    @EnvironmentObject var router: AppRouter   // Router for navigation
+    @EnvironmentObject var store: NutritionStore
+    let meals = Meal.sample   // Sample meals for display
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // MARK: - Header
-                HStack {
-                    // Back button → returns to Home
-                    Button { router.goBackToHome() } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.appTextDark)
-                    }
-
-                    Spacer()
-
-                    Text("Meal Plan").font(.h2)
-
-                    Spacer()
-
-                    // Ellipsis button → placeholder for future actions
-                    Button {
-                        // TODO: Wire to options sheet or menu
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .foregroundColor(.appTextDark)
-                    }
-                }
+                Text("Meal Plan").font(.h1)
 
                 // MARK: - Date Card
                 HStack {
-                    Text(vm.selectedDate).font(.bodyText)
+                    Text(Date(), style: .date).font(.bodyText)
                     Spacer()
-                    Button {
-                        // TODO: Wire to calendar picker
-                    } label: {
-                        Image(systemName: "calendar")
-                            .foregroundColor(.appTextDark)
-                    }
+                    Image(systemName: "calendar")
                 }
                 .padding(12)
                 .background(Color.appCard)
                 .cornerRadius(12)
 
+                // MARK: - Recommended Meals
                 Text("Recommended Meals").font(.h2)
 
-                // MARK: - Meals List
                 VStack(spacing: 10) {
-                    ForEach(vm.meals) { meal in
-                        MealRow(meal: meal) {
-                            vm.logMeal(meal)   // "+" button now logs meal
+                    ForEach(meals) { meal in
+                        NavigationLink { MealDetailView(meal: meal) } label: {
+                            MealRow(meal: meal) {
+                                store.addMeal(meal)
+                            }
                         }
+                        .buttonStyle(.plain)
                     }
                 }
 
@@ -63,16 +41,13 @@ struct MealPlanView: View {
                     HStack {
                         Text("Daily Progress").font(.bodyText.bold())
                         Spacer()
-                        Text("\(vm.currentKcal) / \(vm.goalKcal) kcal")
+                        Text("\(store.consumedKcal) / \(store.calorieGoal) kcal")
                             .font(.captionText)
                             .foregroundColor(.appTextGray)
                     }
-                    ProgressView(
-                        value: Double(min(vm.currentKcal, vm.goalKcal)),
-                        total: Double(vm.goalKcal)
-                    )
-                    .tint(.appGreen)
-                    Text("\(vm.progressPercent)%")
+                    ProgressView(value: store.progress)
+                        .tint(.appGreen)
+                    Text("\(Int(store.progress * 100))%")
                         .font(.captionText)
                         .foregroundColor(.appGreen)
                 }
@@ -82,6 +57,8 @@ struct MealPlanView: View {
             }
             .padding(16)
         }
+        .navigationTitle("Meal Plan")
+        .navigationBarTitleDisplayMode(.inline)
         .background(Color.appBackground.ignoresSafeArea())
     }
 }
