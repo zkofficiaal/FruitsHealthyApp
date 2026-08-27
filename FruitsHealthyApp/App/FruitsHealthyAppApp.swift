@@ -1,25 +1,24 @@
-//
-//  FruitsHealthyAppApp.swift
-//  FruitsHealthyApp
-//
-//  Created by Z.K   on 21/08/2026.
-//
-
 import SwiftUI
 
-// MARK: - App Entry Point
+// MARK: - FruitsHealthyApp Entry Point
+// Main application struct: initializes router and store,
+// injects them into the environment for global access.
 @main
 struct FruitsHealthyAppApp: App {
+    // MARK: - State Objects
+    // Router handles navigation between views
     @StateObject private var router = AppRouter()
-    // Creates the single shared AppRouter instance for the whole app lifecycle
+    // Store is the single source of truth for nutrition data
+    @StateObject private var store = NutritionStore()
 
+    // MARK: - Scene Body
     var body: some Scene {
         WindowGroup {
+            // RootView is the main container view
             RootView()
+                // Inject router and store into environment
                 .environmentObject(router)
-                // Injects AppRouter into the environment so any child view
-                // (RootView, MainTabContainer, HomeView, etc.) can access it
-                // via @EnvironmentObject var router: AppRouter
+                .environmentObject(store)
         }
     }
 }

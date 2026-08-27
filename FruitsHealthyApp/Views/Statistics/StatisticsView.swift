@@ -13,9 +13,10 @@ struct StatisticsView: View {
                 VStack(spacing: 20) {
                     // MARK: - Header
                     HStack {
-                        Button { router.goBackToHome() } label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.appTextDark)
+                        Button { } label: {
+                            Image(systemName: "square.grid.2x2")
+                                .font(.system(size: 15))
+                                .foregroundColor(.appTextGray)
                         }
 
                         Spacer()
