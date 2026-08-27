@@ -109,3 +109,13 @@ struct StatisticsView: View {
                     .foregroundColor(selectedRange == range ? .white : .appTextGray)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
+                    .background(selectedRange == range ? Color.appGreen : Color.clear)
+                    .cornerRadius(16)
+                    .onTapGesture { selectedRange = range }
+            }
+        }
+        .padding(4)
+        .background(Color.appCard)
+        .cornerRadius(20)
+    }
+}
