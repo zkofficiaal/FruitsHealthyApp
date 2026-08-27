@@ -1,50 +1,51 @@
 import SwiftUI
 
 // MARK: - Fruit Grid Card
-// Vertical card layout: fruit image fills the top,
-// name + kcal below, and a floating "+" button sits
-// bottom-right on the image — matches reference design.
+// Displays fruit info with image, kcal, and add button inside a NavigationLink
 struct FruitGridCard: View {
     let fruit: Fruit              // Fruit model data
-    var onAdd: () -> Void         // Action when "+" tapped
+    var onAdd: () -> Void         // Action when add button tapped
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // MARK: - Image with Floating Add Button
-            ZStack(alignment: .bottomTrailing) {
+        // MARK: - Navigation Link
+        // Wraps the card so tapping navigates to fruit detail
+        NavigationLink(value: fruit) {
+            HStack(spacing: 12) {
+                // MARK: - Fruit Image
                 Image(fruit.imageName)
                     .resizable()
                     .scaledToFill()
-                    .frame(height: 90)
-                    .frame(maxWidth: .infinity)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .frame(width: 44, height: 44)
+                    .clipShape(Circle())
 
+                // MARK: - Fruit Info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(fruit.name)
+                        .font(.bodyText.bold())
+                        .foregroundColor(.appTextDark)
+                    Text("\(fruit.kcal) kcal")
+                        .font(.captionText)
+                        .foregroundColor(.appTextGray)
+                }
+
+                Spacer()
+
+                // MARK: - Add Button
                 Button(action: onAdd) {
                     Image(systemName: "plus")
                         .font(.caption.bold())
                         .foregroundColor(.white)
-                        .frame(width: 26, height: 26)
+                        .frame(width: 22, height: 22)
                         .background(Color.appGreen)
                         .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.15), radius: 3, y: 2)
                 }
-                .padding(6)
+                .buttonStyle(.plain) // prevents row tap from triggering NavigationLink
             }
-
-            // MARK: - Text Info
-            VStack(alignment: .leading, spacing: 2) {
-                Text(fruit.name)
-                    .font(.bodyText.bold())
-                    .foregroundColor(.appTextDark)
-                Text("\(fruit.kcal) kcal")
-                    .font(.captionText)
-                    .foregroundColor(.appTextGray)
-            }
-            .padding(.horizontal, 4)
+            .padding(12)
+            .background(Color.appCard)
+            .cornerRadius(14)
+            .shadow(color: .black.opacity(0.04), radius: 5, y: 2)
         }
-        .padding(8)
-        .background(Color.appCard)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.04), radius: 6, y: 3)
+        .buttonStyle(.plain) // ensures only explicit taps trigger navigation
     }
 }
