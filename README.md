@@ -2,7 +2,8 @@
 <img width="387" height="785" alt="Screenshot 2026-08-27 at 1 14 41 PM" src="https://github.com/user-attachments/assets/84536328-f212-4373-9c9a-86d80ec0660f" />
 <img width="383" height="787" alt="Screenshot 2026-08-27 at 1 15 26 PM" src="https://github.com/user-attachments/assets/cfc78836-6173-4c07-ba04-3893d126572b" />
 <img width="376" height="786" alt="Screenshot 2026-08-27 at 1 15 46 PM" src="https://github.com/user-attachments/assets/341eaba0-ea1e-4746-8dd3-076d4ed2d7d3" />
-# FruitsHealthyApp 🍊
+
+### FruitsHealthyApp 🍊
 
 A SwiftUI nutrition-tracking app for discovering fruits, logging meals, and monitoring daily calorie, macro, and water intake.
 
