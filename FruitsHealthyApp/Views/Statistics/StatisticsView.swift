@@ -2,108 +2,102 @@ import SwiftUI
 import Charts
 
 // MARK: - Statistics View
-// Screen for viewing calorie intake and nutrient ratio analytics
+// Displays calorie intake chart and nutrient ratio breakdown
 struct StatisticsView: View {
-    @StateObject private var vm = StatisticsViewModel()
-    @EnvironmentObject var router: AppRouter   // Router for navigation
+    @EnvironmentObject var store: NutritionStore
+    @State private var selectedRange: StatsRange = .day
+
+    // MARK: - Range Enum
+    enum StatsRange: String, CaseIterable {
+        case day = "Day", week = "Week", month = "Month", year = "Year"
+    }
 
     var body: some View {
-        GeometryReader { geo in
-            ScrollView {
-                VStack(spacing: 20) {
-                    // MARK: - Header
-                    HStack {
-                        Button { } label: {
-                            Image(systemName: "square.grid.2x2")
-                                .font(.system(size: 15))
+        NavigationStack {
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // MARK: - Header
+                        Text("Statistics")
+                            .font(.h1)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        // MARK: - Range Selector
+                        rangeSelector
+
+                        // MARK: - Calorie Intake Card
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Calorie Intake")
+                                .font(.captionText)
                                 .foregroundColor(.appTextGray)
-                        }
+                            Text("\(store.weeklyEntries.reduce(0) { $0 + $1.kcal }) kcal")
+                                .font(.h1)
+                            Text("This Week")
+                                .font(.captionText)
+                                .foregroundColor(.appTextGray)
 
-                        Spacer()
-
-                        Text("Statistics").font(.h2)
-
-                        Spacer()
-
-                        Button {
-                            // TODO: Wire to options sheet or menu
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .foregroundColor(.appTextDark)
-                        }
-                    }
-
-                    rangeSelector
-
-                    // MARK: - Calorie Intake Card
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Calorie Intake").font(.captionText).foregroundColor(.appTextGray)
-                        Text("\(vm.data.weekTotalKcal) kcal").font(.h1)
-                        Text("This Week").font(.captionText).foregroundColor(.appTextGray)
-
-                        Chart(vm.data.entries) { entry in
-                            BarMark(
-                                x: .value("Day", entry.day),
-                                y: .value("Kcal", entry.kcal)
-                            )
-                            .foregroundStyle(entry.kcal == vm.data.highlightKcal
-                                             ? Color.appGreen
-                                             : Color.appGreen.opacity(0.25))
-                            .cornerRadius(6)
-                            .annotation(position: .top) {
-                                if entry.kcal == vm.data.highlightKcal {
-                                    Text("\(entry.kcal)")
-                                        .font(.caption2.bold())
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(Color.appTextDark)
-                                        .cornerRadius(8)
-                                }
+                            Chart(store.weeklyEntries) { entry in
+                                BarMark(
+                                    x: .value("Day", entry.day),
+                                    y: .value("Kcal", entry.kcal)
+                                )
+                                .foregroundStyle(entry.day == "Sun"
+                                                 ? Color.appGreen
+                                                 : Color.appGreen.opacity(0.3))
+                                .cornerRadius(6)
                             }
+                            .frame(height: geo.size.height * 0.2)
                         }
-                        .frame(height: geo.size.height * 0.2) // responsive height
-                    }
-                    .padding(16)
-                    .background(Color.appCard)
-                    .cornerRadius(16)
+                        .padding(16)
+                        .background(Color.appCard)
+                        .cornerRadius(16)
 
-                    // MARK: - Nutrients Ratio Card
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Nutrients Ratio").font(.h2)
-                        Text("This Week").font(.captionText).foregroundColor(.appTextGray)
+                        // MARK: - Nutrients Ratio Card
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Nutrients Ratio").font(.h2)
+                            Text("Today")
+                                .font(.captionText)
+                                .foregroundColor(.appTextGray)
 
-                        HStack {
-                            DonutProgressRing(
-                                segments: vm.data.nutrientRatio,
-                                centerValue: "",
-                                centerLabel: "",
-                                size: geo.size.width * 0.3
-                            )
-                            .frame(width: geo.size.width * 0.3, height: geo.size.width * 0.3)
-
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(vm.data.nutrientRatio) { n in
-                                    HStack {
-                                        Circle().fill(Color(hex: n.colorHex)).frame(width: 8, height: 8)
-                                        Text(n.label).font(.captionText)
-                                        Spacer()
-                                        Text("\(n.percent)%").font(.captionText.bold())
+                            if store.hasLoggedToday {
+                                HStack {
+                                    DonutProgressRing(
+                                        segments: store.nutrientBreakdown,
+                                        centerValue: "",
+                                        centerLabel: "",
+                                        size: geo.size.width * 0.3
+                                    )
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        ForEach(store.nutrientBreakdown) { n in
+                                            HStack {
+                                                Circle()
+                                                    .fill(Color(hex: n.colorHex))
+                                                    .frame(width: 8, height: 8)
+                                                Text(n.label).font(.captionText)
+                                                Spacer()
+                                                Text("\(n.percent)%")
+                                                    .font(.captionText.bold())
+                                            }
+                                        }
                                     }
                                 }
+                            } else {
+                                Text("Log something today to see your ratio.")
+                                    .font(.captionText)
+                                    .foregroundColor(.appTextGray)
                             }
                         }
+                        .padding(16)
+                        .background(Color.appCard)
+                        .cornerRadius(16)
                     }
-                    .padding(16)
-                    .background(Color.appCard)
-                    .cornerRadius(16)
+                    .padding(.horizontal, geo.size.width * 0.045)
+                    .padding(.vertical, 16)
+                    .frame(minWidth: geo.size.width)
                 }
-                .padding(.horizontal, geo.size.width * 0.045)
-                .padding(.vertical, 16)
-                .frame(minWidth: geo.size.width)
             }
+            .background(Color.appBackground.ignoresSafeArea())
         }
-        .background(Color.appBackground.ignoresSafeArea())
     }
 
     // MARK: - Range Selector
@@ -112,16 +106,6 @@ struct StatisticsView: View {
             ForEach(StatsRange.allCases, id: \.self) { range in
                 Text(range.rawValue)
                     .font(.captionText.bold())
-                    .foregroundColor(vm.selectedRange == range ? .white : .appTextGray)
+                    .foregroundColor(selectedRange == range ? .white : .appTextGray)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(vm.selectedRange == range ? Color.appGreen : Color.clear)
-                    .cornerRadius(16)
-                    .onTapGesture { vm.selectedRange = range }
-            }
-        }
-        .padding(4)
-        .background(Color.appCard)
-        .cornerRadius(20)
-    }
-}
